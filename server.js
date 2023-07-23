@@ -1,7 +1,8 @@
 
 const express = require('express');
 const nodemailer = require('nodemailer');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,8 +10,8 @@ const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     auth: {
-        user: "warronnikole112@gmail.com",
-        pass: "",
+        user: process.env.GMAIL_USERNAME,
+        pass: process.env.GMAIL_PASSWORD,
       },
 });
 
@@ -18,13 +19,13 @@ app.use(express.json());
 
 
 app.post('/send-email', (req, res) => {
-  const {email, subject, text } = req.body;
+  const {name, nameOfOrg, email, message } = req.body;
 
   const mailOptions = {
-    from: '"Fred Foo 👻" <porfolio.client@outlook.com>', // sender address
+    from: `${name}👻 <porfolio.client@outlook.com>`, // sender address
     to: "prateekshrmprateek@gmail.com", // list of receivers
-    subject: subject, // Subject line
-    text: text, // plain text body
+    subject: `New Portfolio Request from  ${name} `, // Subject line
+    text: message, // plain text body
     html: `<!doctype html>
     <html>
       <head>
@@ -32,11 +33,7 @@ app.post('/send-email', (req, res) => {
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Simple Transactional Email</title>
         <style>
-          /* -------------------------------------
-              GLOBAL RESETS
-          ------------------------------------- */
-          
-          /*All the styling goes here*/
+        
           
           img {
             border: none;
@@ -376,25 +373,10 @@ app.post('/send-email', (req, res) => {
                       <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                           <td>
-                            <p>Hi there,</p>
-                            <p>Sometimes you just want to send a simple HTML email with a simple design and clear call to action. This is it.</p>
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                              <tbody>
-                                <tr>
-                                  <td align="left">
-                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                      <tbody>
-                                        <tr>
-                                          <td> <a href="http://htmlemail.io" target="_blank">Call To Action</a> </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <p>This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.</p>
-                            <p>Good luck! Hope it works.</p>
+                            <p>From: ${name} (${email})</p>
+                            <p> Organization: ${nameOfOrg} </p>
+                            <p>${message}</p>
+                          
                           </td>
                         </tr>
                       </table>
@@ -405,23 +387,7 @@ app.post('/send-email', (req, res) => {
                 </table>
                 <!-- END CENTERED WHITE CONTAINER -->
     
-                <!-- START FOOTER -->
-                <div class="footer">
-                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td class="content-block">
-                        <span class="apple-link">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>
-                        <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="content-block powered-by">
-                        Powered by <a href="http://htmlemail.io">HTMLemail</a>.
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <!-- END FOOTER -->
+                
     
               </div>
             </td>
