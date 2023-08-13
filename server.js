@@ -2,8 +2,10 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+var cors = require('cors')
 dotenv.config();
 const app = express();
+app.use(cors())
 const PORT = process.env.PORT || 3000;
 
 const transporter = nodemailer.createTransport({
@@ -18,7 +20,7 @@ const transporter = nodemailer.createTransport({
 app.use(express.json());
 
 
-app.post('/send-email', (req, res) => {
+app.post('/send-email', cors(), (req, res) => {
   const {name, nameOfOrg, email, message } = req.body;
 
   const mailOptions = {
