@@ -25,7 +25,7 @@ app.post('/send-email', cors(), (req, res) => {
 
   const mailOptions = {
     from: `${name}👻 <porfolio.client@outlook.com>`, // sender address
-    to: "prateekshrmprateek@gmail.com", // list of receivers
+    to: "prateekshrmprateek@gmail.com, deshwal21ankit@gmail.com", // list of receivers
     subject: `New Portfolio Request from  ${name} `, // Subject line
     text: message, // plain text body
     html: `<!doctype html>
